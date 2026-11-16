@@ -1,0 +1,24 @@
+# Core modelling
+pandas>=2.1
+numpy>=1.26
+scipy>=1.11
+pyyaml>=6.0
+pydantic>=2.5
+
+# Database (SQLite works out of the box; install psycopg2-binary for PostgreSQL)
+sqlalchemy>=2.0
+# psycopg2-binary>=2.9   # uncomment to use PostgreSQL via DATABASE_URL
+
+# Optimisation
+ortools>=9.8
+
+# Dashboard & charts
+streamlit>=1.33
+plotly>=5.18
+
+# Reporting / IO
+openpyxl>=3.1
+pyarrow>=14.0
+
+# Testing
+pytest>=7.4

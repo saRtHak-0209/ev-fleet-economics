@@ -1,0 +1,21 @@
+# generated data & database (recreate with: python bootstrap.py)
+data/synthetic/
+data/processed/
+data/raw/
+data/*.db
+
+# generated reports (recreate with: python bootstrap.py)
+reports/*.md
+reports/*.xlsx
+reports/*.json
+reports/*.csv
+
+# python
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+venv/
+
+# streamlit
+.streamlit/secrets.toml

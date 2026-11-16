@@ -1,0 +1,38 @@
+# =====================================================================
+# Scenario definitions — dotted-path overrides applied on top of the
+# base assumptions register. (Project spec §Module 6)
+# =====================================================================
+base:
+  label: "Base"
+  description: "Baseline operating assumptions."
+  overrides: {}
+
+optimistic:
+  label: "Optimistic"
+  description: >
+    Higher utilisation, lower downtime, better routing, lower maintenance,
+    stable tariffs.
+  overrides:
+    operations.daily_km: 110
+    operations.availability: 0.95
+    operations.productive_ratio: 0.90
+    maintenance.cost_per_km: 0.35
+    energy.tariff: 11.0
+    battery.calendar_fade_py: 0.025
+    vehicle.residual_value_pct: 0.18
+
+pessimistic:
+  label: "Pessimistic"
+  description: >
+    Lower utilisation, higher downtime, costlier power, heavier maintenance,
+    faster battery fade, weaker resale.
+  overrides:
+    operations.daily_km: 80
+    operations.availability: 0.82
+    operations.productive_ratio: 0.78
+    maintenance.cost_per_km: 0.55
+    maintenance.age_escalation_py: 0.12
+    energy.tariff: 15.0
+    battery.calendar_fade_py: 0.06
+    vehicle.residual_value_pct: 0.08
+    working_capital.receivable_days: 45

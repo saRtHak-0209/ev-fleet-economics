@@ -1,0 +1,88 @@
+# =====================================================================
+# City expansion parameters (Project spec §Module 8)
+# ---------------------------------------------------------------------
+# IMPORTANT: every value below is an ILLUSTRATIVE PLACEHOLDER, labelled
+# per the spec's instruction not to manufacture city-level market
+# statistics. Replace each entry with a researched, dated figure
+# (DISCOM tariff orders, signed contract rates, pilot telemetry)
+# before using the output for a real allocation decision.
+# `confidence` applies to the whole city block.
+# =====================================================================
+budget_inr: 50000000        # ₹5 crore expansion capital (spec §Module 8)
+
+cities:
+  Bengaluru:
+    status: existing        # current operating market — used as reference
+    lat: 12.9716
+    lon: 77.5946
+    confidence: medium      # anchored on own operating data (synthetic here)
+    overrides:
+      energy.tariff: 12.0
+      operations.daily_km: 100
+      operations.billing_rate: 8.0
+      operations.productive_ratio: 0.85
+      operations.availability: 0.90
+      maintenance.cost_per_km: 0.40
+    expansion:
+      min_fleet: 50
+      max_fleet_demand: 400        # additional demand-supported vehicles
+      setup_capex: 1500000         # incremental hub expansion
+      city_fixed_pm: 60000         # incremental city overhead
+      charger_capacity_points: 120 # additional points the yard can host
+
+  Hyderabad:
+    status: candidate
+    lat: 17.3850
+    lon: 78.4867
+    confidence: low
+    overrides:
+      energy.tariff: 11.0
+      operations.daily_km: 95
+      operations.billing_rate: 7.8
+      operations.productive_ratio: 0.84
+      operations.availability: 0.89
+      maintenance.cost_per_km: 0.42
+    expansion:
+      min_fleet: 50
+      max_fleet_demand: 300
+      setup_capex: 2500000
+      city_fixed_pm: 220000
+      charger_capacity_points: 90
+
+  Chennai:
+    status: candidate
+    lat: 13.0827
+    lon: 80.2707
+    confidence: low
+    overrides:
+      energy.tariff: 10.0
+      operations.daily_km: 90
+      operations.billing_rate: 7.5
+      operations.productive_ratio: 0.82
+      operations.availability: 0.88
+      maintenance.cost_per_km: 0.45   # coastal corrosion allowance
+    expansion:
+      min_fleet: 50
+      max_fleet_demand: 250
+      setup_capex: 2500000
+      city_fixed_pm: 220000
+      charger_capacity_points: 80
+
+  Pune:
+    status: candidate
+    lat: 18.5204
+    lon: 73.8567
+    confidence: low
+    overrides:
+      energy.tariff: 13.0
+      operations.daily_km: 92
+      operations.billing_rate: 8.2
+      operations.productive_ratio: 0.86
+      operations.availability: 0.90
+      maintenance.cost_per_km: 0.40
+    expansion:
+      min_fleet: 50
+      max_fleet_demand: 220
+      setup_capex: 2200000
+      city_fixed_pm: 200000
+      charger_capacity_points: 70

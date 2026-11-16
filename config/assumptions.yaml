@@ -1,0 +1,379 @@
+# =====================================================================
+# VoltMove Mobility — Base-case assumptions register
+# ---------------------------------------------------------------------
+# Every entry carries: value, unit, source, as_of, confidence.
+# confidence: high | medium | low | assumption
+#   "assumption" = illustrative modelling input from the project spec;
+#   it MUST be calibrated against quotations / contracts before the
+#   model output is used for a real investment decision.
+# All monetary values in INR unless stated otherwise.
+# =====================================================================
+meta:
+  name: base
+  currency: INR
+  as_of: "2026-11-17"
+  description: >
+    Base-case operating and financial assumptions for a 500-vehicle
+    electric two-wheeler fleet in Bengaluru, billed per productive km.
+
+fleet:
+  initial_fleet:
+    value: 500
+    unit: vehicles
+    source: "Project spec §5.2"
+    as_of: "2026-11"
+    confidence: assumption
+  horizon_months:
+    value: 60
+    unit: months
+    source: "Project spec §5.2 (5-year forecast)"
+    as_of: "2026-11"
+    confidence: assumption
+
+vehicle:
+  purchase_cost:
+    value: 120000
+    unit: INR/vehicle
+    source: "Project spec §5.2 — illustrative; replace with dated OEM fleet quotation"
+    as_of: "2026-11"
+    confidence: assumption
+  useful_life_months:
+    value: 60
+    unit: months
+    source: "Project spec §5.2"
+    as_of: "2026-11"
+    confidence: assumption
+  residual_value_pct:
+    value: 0.15
+    unit: fraction of purchase cost
+    source: "Project spec §5.2 — validate against resale market"
+    as_of: "2026-11"
+    confidence: low
+  registration_cost:
+    value: 2000
+    unit: INR/vehicle (one-time)
+    source: "Illustrative; EVs exempt from road tax in Karnataka, nominal registration/fitment"
+    as_of: "2026-11"
+    confidence: low
+
+operations:
+  daily_km:
+    value: 100
+    unit: km/vehicle/day (deployed)
+    source: "Project spec §5.2"
+    as_of: "2026-11"
+    confidence: assumption
+  productive_ratio:
+    value: 0.85
+    unit: fraction of total km billed
+    source: "Project spec §5.2"
+    as_of: "2026-11"
+    confidence: assumption
+  availability:
+    value: 0.90
+    unit: fraction of scheduled vehicle-days deployed
+    source: "Project spec §5.2"
+    as_of: "2026-11"
+    confidence: assumption
+  operating_days:
+    value: 26
+    unit: days/month
+    source: "Project spec §5.2"
+    as_of: "2026-11"
+    confidence: assumption
+  billing_rate:
+    value: 8.0
+    unit: INR/productive km
+    source: "Project spec §5.2 — validate against signed B2B contracts; viability is highly sensitive to this rate"
+    as_of: "2026-11"
+    confidence: low
+
+energy:
+  kwh_per_km:
+    value: 0.04
+    unit: kWh/km (at battery)
+    source: "Project spec §5.2; consistent with ~3 kWh / 75-85 km real-world range"
+    as_of: "2026-11"
+    confidence: medium
+  charging_efficiency:
+    value: 0.90
+    unit: fraction (battery energy / grid energy)
+    source: "Project spec §5.2"
+    as_of: "2026-11"
+    confidence: medium
+  tariff:
+    value: 12.0
+    unit: INR/kWh (blended commercial charging)
+    source: "Project spec §5.2; within NITI Aayog indicative 10-14 INR/kWh public AC band. Replace with applicable BESCOM LT/HT commercial tariff incl. fixed & demand charges"
+    as_of: "2026-11"
+    confidence: low
+  consumption_soh_coupling:
+    value: 0.0
+    unit: fractional kWh/km increase per unit SOH loss
+    source: "Modelling switch, default off in base case"
+    as_of: "2026-11"
+    confidence: assumption
+
+maintenance:
+  cost_per_km:
+    value: 0.40
+    unit: INR/km (total km, year-1 vehicle)
+    source: "Project spec §5.2 — validate against AMC quotations"
+    as_of: "2026-11"
+    confidence: low
+  age_escalation_py:
+    value: 0.08
+    unit: fractional increase per year of vehicle age
+    source: "Illustrative aging effect (spec §Module 3B: age-dependent maintenance)"
+    as_of: "2026-11"
+    confidence: low
+
+battery:
+  capacity_kwh:
+    value: 3.0
+    unit: kWh
+    source: "Project spec §5.2"
+    as_of: "2026-11"
+    confidence: medium
+  replacement_cost_per_kwh:
+    value: 9000
+    unit: INR/kWh
+    source: "Illustrative pack-replacement price; obtain OEM quotation"
+    as_of: "2026-11"
+    confidence: low
+  calendar_fade_py:
+    value: 0.03
+    unit: SOH fraction lost per year (calendar + normal cycling)
+    source: "Project spec §Module 3C — illustrative 3%/yr, not a universal degradation rate"
+    as_of: "2026-11"
+    confidence: low
+  cycle_fade_per_10k_km:
+    value: 0.0
+    unit: additional SOH fraction lost per 10,000 km
+    source: "Modelling switch, 0 in base (all fade expressed as calendar rate)"
+    as_of: "2026-11"
+    confidence: assumption
+  replacement_threshold_soh:
+    value: 0.75
+    unit: SOH fraction triggering replacement
+    source: "Project spec §Module 3C (configurable)"
+    as_of: "2026-11"
+    confidence: assumption
+  min_remaining_months_for_replacement:
+    value: 6
+    unit: months
+    source: "Operating rule: do not replace a pack in the last 6 months of the horizon"
+    as_of: "2026-11"
+    confidence: assumption
+  availability_coupling_k:
+    value: 0.5
+    unit: availability points lost per SOH point below threshold
+    source: "Illustrative range-loss effect on deployability"
+    as_of: "2026-11"
+    confidence: low
+  availability_coupling_soh_threshold:
+    value: 0.80
+    unit: SOH below which availability is impaired
+    source: "Illustrative"
+    as_of: "2026-11"
+    confidence: low
+
+fixed_costs:
+  insurance_per_vehicle_py:
+    value: 6000
+    unit: INR/vehicle/year
+    source: "Project spec §5.2 — validate against commercial fleet policy quotation"
+    as_of: "2026-11"
+    confidence: low
+  telematics_per_vehicle_pm:
+    value: 80
+    unit: INR/vehicle/month
+    source: "Illustrative telematics/SaaS per-vehicle fee"
+    as_of: "2026-11"
+    confidence: low
+  staff_vehicles_per_supervisor:
+    value: 50
+    unit: vehicles per field-ops supervisor
+    source: "Illustrative span of control"
+    as_of: "2026-11"
+    confidence: low
+  supervisor_salary_pm:
+    value: 28000
+    unit: INR/month
+    source: "Illustrative Bengaluru field-ops salary"
+    as_of: "2026-11"
+    confidence: low
+  hub_rent_pm:
+    value: 120000
+    unit: INR/month (parking + charging yard, 500-vehicle scale)
+    source: "Illustrative"
+    as_of: "2026-11"
+    confidence: low
+  admin_overhead_pm:
+    value: 300000
+    unit: INR/month (management, finance, office)
+    source: "Illustrative"
+    as_of: "2026-11"
+    confidence: low
+
+infrastructure:
+  vehicles_per_charge_point:
+    value: 4
+    unit: vehicles per 3kW AC point
+    source: "Illustrative hub-charging ratio (overnight + opportunity charging)"
+    as_of: "2026-11"
+    confidence: low
+  charge_point_capex:
+    value: 25000
+    unit: INR per point incl. installation
+    source: "Illustrative 3kW AC point cost"
+    as_of: "2026-11"
+    confidence: low
+  grid_connection_capex:
+    value: 1000000
+    unit: INR one-time (sanction load, transformer share) at 500-vehicle scale
+    source: "Illustrative"
+    as_of: "2026-11"
+    confidence: low
+  infra_life_months:
+    value: 84
+    unit: months
+    source: "Illustrative 7-year charger life"
+    as_of: "2026-11"
+    confidence: low
+  charger_maintenance_pm_per_point:
+    value: 200
+    unit: INR/point/month
+    source: "Illustrative"
+    as_of: "2026-11"
+    confidence: low
+
+financing:
+  mode:
+    value: owned
+    unit: "owned | financed"
+    source: "Base case: fully equity-funded fleet (spec §Module 3E case 1)"
+    as_of: "2026-11"
+    confidence: assumption
+  down_payment_pct:
+    value: 0.30
+    unit: fraction of vehicle capex paid upfront (financed mode)
+    source: "Illustrative NBFC EV-fleet terms — not a financing offer"
+    as_of: "2026-11"
+    confidence: low
+  interest_rate_py:
+    value: 0.14
+    unit: nominal annual rate, monthly rests
+    source: "Illustrative NBFC EV-fleet lending band — not a financing offer"
+    as_of: "2026-11"
+    confidence: low
+  tenure_months:
+    value: 36
+    unit: months
+    source: "Illustrative"
+    as_of: "2026-11"
+    confidence: low
+
+tax:
+  corporate_rate:
+    value: 0.2517
+    unit: fraction of PBT (simplified; 25.17% new-regime corporate rate incl. cess)
+    source: "Simplified documented assumption (spec §13.7) — actual depreciation/GST/income-tax treatment needs professional validation"
+    as_of: "2026-11"
+    confidence: low
+  loss_carryforward:
+    value: true
+    unit: boolean
+    source: "Simplified: past losses offset future taxable profit, no refunds"
+    as_of: "2026-11"
+    confidence: assumption
+
+working_capital:
+  receivable_days:
+    value: 30
+    unit: days of revenue outstanding (B2B billing cycle)
+    source: "Illustrative 30-day B2B collection cycle"
+    as_of: "2026-11"
+    confidence: low
+  opening_cash_buffer:
+    value: 15000000
+    unit: INR held as operating cash at t0 (funded by equity)
+    source: "Illustrative ~3 months of operating costs"
+    as_of: "2026-11"
+    confidence: assumption
+
+valuation:
+  discount_rate_py:
+    value: 0.12
+    unit: annual discount rate (management assumption, not an estimated WACC)
+    source: "Project spec §Module 4G"
+    as_of: "2026-11"
+    confidence: assumption
+  hurdle_irr:
+    value: 0.18
+    unit: minimum acceptable project IRR for expansion
+    source: "Management threshold (transparent, configurable)"
+    as_of: "2026-11"
+    confidence: assumption
+  max_payback_months:
+    value: 36
+    unit: months
+    source: "Management threshold for 'Expand' classification"
+    as_of: "2026-11"
+    confidence: assumption
+
+petrol:
+  purchase_cost:
+    value: 85000
+    unit: INR/vehicle (comparable commuter 110cc)
+    source: "Illustrative ex-showroom + fleet registration; obtain dated quotation"
+    as_of: "2026-11"
+    confidence: low
+  mileage_km_per_litre:
+    value: 48
+    unit: km/litre real-world commercial use
+    source: "Illustrative; rated ~55-60, derated for delivery duty cycle"
+    as_of: "2026-11"
+    confidence: low
+  petrol_price_per_litre:
+    value: 103.0
+    unit: INR/litre (Bengaluru)
+    source: "Indicative Bengaluru retail petrol price — verify at iocl.com on model date"
+    as_of: "2026-11"
+    confidence: low
+  maintenance_per_km:
+    value: 0.75
+    unit: INR/km (engine servicing, oil, clutch, chain)
+    source: "Illustrative; ICE 2W commercial maintenance typically 1.5-2x EV"
+    as_of: "2026-11"
+    confidence: low
+  maintenance_age_escalation_py:
+    value: 0.10
+    unit: fractional increase per year of age
+    source: "Illustrative"
+    as_of: "2026-11"
+    confidence: low
+  insurance_py:
+    value: 6500
+    unit: INR/vehicle/year
+    source: "Illustrative"
+    as_of: "2026-11"
+    confidence: low
+  residual_value_pct:
+    value: 0.25
+    unit: fraction of purchase cost after 5 years
+    source: "Illustrative; ICE 2W resale market is deeper than EV today"
+    as_of: "2026-11"
+    confidence: low
+  fuel_system_overhaul_cost:
+    value: 8000
+    unit: INR at year 3 (carburettor/FI, clutch, major service)
+    source: "Illustrative"
+    as_of: "2026-11"
+    confidence: low
+  useful_life_months:
+    value: 60
+    unit: months
+    source: "Matched to EV comparison horizon"
+    as_of: "2026-11"
+    confidence: assumption
